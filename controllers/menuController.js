@@ -27,4 +27,13 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { getAll, getOne, create };
+const updateItemById = async (req, res) => {
+  try {
+    const updatedItem = await MenuItems.updateById(req.params.id, req.body);
+    res.send(updatedItem);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+module.exports = { getAll, getOne, create, updateItemById };

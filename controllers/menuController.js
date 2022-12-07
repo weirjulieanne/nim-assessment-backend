@@ -36,4 +36,13 @@ const updateItemById = async (req, res) => {
   }
 };
 
-module.exports = { getAll, getOne, create, updateItemById };
+const deleteItemById = async (req, res) => {
+  try {
+    const deletedItemId = await MenuItems.deleteItemById(req.params.id);
+    res.send(deletedItemId);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+module.exports = { getAll, getOne, create, updateItemById, deleteItemById };

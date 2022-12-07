@@ -56,13 +56,22 @@ const create = async (body) => {
 };
 
 const updateById = async (id, body) => {
-  const newObject = body;
-  newObject.updatedAt = Date.now();
   try {
+    const newObject = body;
+    newObject.updatedAt = Date.now();
     const updatedItem = await MenuItems.findByIdAndUpdate(id, newObject, {
       new: true
     });
     return updatedItem;
+  } catch (error) {
+    return error;
+  }
+};
+
+const deleteItemById = async (id) => {
+  try {
+    const deletedItem = await MenuItems.findByIdAndDelete(id);
+    return deletedItem.id;
   } catch (error) {
     return error;
   }
@@ -73,5 +82,6 @@ module.exports = {
   getOne,
   create,
   MenuItems,
-  updateById
+  updateById,
+  deleteItemById
 };

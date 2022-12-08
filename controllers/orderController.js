@@ -1,4 +1,5 @@
 const Order = require("../db/models/orders.js");
+const Items = require("../db/models/menuItems.js");
 
 const getAll = async (req, res) => {
   try {
@@ -67,9 +68,33 @@ const getByStatus = async (req, res) => {
   }
 };
 
+const getTotalSales = async (req, res) => {
+  try {
+    let total = 0;
+    const menuItems = await Items.getAll();
+    const allOrderedItems = await Order.getTotalItemsByDateRange();
+    allOrderedItems.forEach((item) => {
+      const theItem = menuItems.find(
+        // eslint-disable-next-line no-underscore-dangle
+        (i) => i._id.toString() === item.item.toString()
+      );
+      if (theItem) {
+        const subtotal = theItem.price * item.quantity;
+        total += subtotal;
+      }
+    });
+
+    const grandTotal = { TOTAL: total };
+    res.send(grandTotal);
+  } catch (error) {
+    res.sendStatus(500).send(error);
+  }
+};
+
 module.exports = {
   getAll,
   getOne,
+  getTotalSales,
   create,
   update,
   remove,

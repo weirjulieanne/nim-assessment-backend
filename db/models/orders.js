@@ -82,6 +82,19 @@ const getByStatus = async (status) => {
   return orders;
 };
 
+const getTotalItemsByDateRange = async () => {
+  const dateRange = { $gte: "2022-01-01", $lte: "2022-07-31" };
+  const allOrders = await Order.find(
+    {
+      $or: [{ createdAt: dateRange }, { updatedAt: dateRange }]
+    },
+    "items"
+  );
+  const flatItemsArray = [];
+  allOrders.forEach((order) => flatItemsArray.push(order.items));
+  return flatItemsArray.flat();
+};
+
 module.exports = {
   getAll,
   getOne,
@@ -89,5 +102,6 @@ module.exports = {
   update,
   remove,
   getByStatus,
+  getTotalItemsByDateRange,
   Order
 };

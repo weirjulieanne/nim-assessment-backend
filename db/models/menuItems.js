@@ -45,6 +45,20 @@ const getOne = async (id) => {
     return error;
   }
 };
+const getItemsBySearchValue = async (value) => {
+  const regexValueCaseInsensitive = { $regex: value, $options: "i" };
+  try {
+    const returnedItems = await MenuItems.find({
+      $or: [
+        { name: regexValueCaseInsensitive },
+        { description: regexValueCaseInsensitive }
+      ]
+    });
+    return returnedItems;
+  } catch (error) {
+    return error;
+  }
+};
 
 const create = async (body) => {
   try {
@@ -83,5 +97,6 @@ module.exports = {
   create,
   MenuItems,
   updateById,
-  deleteItemById
+  deleteItemById,
+  getItemsBySearchValue
 };

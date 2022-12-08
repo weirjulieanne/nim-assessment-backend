@@ -18,6 +18,15 @@ const getOne = async (req, res) => {
   }
 };
 
+const getItemsBySearchValue = async (req, res) => {
+  try {
+    const menuItems = await MenuItems.getItemsBySearchValue(req.query.q);
+    res.send(menuItems);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 const create = async (req, res) => {
   try {
     const menu = await MenuItems.create(req.body);
@@ -45,4 +54,11 @@ const deleteItemById = async (req, res) => {
   }
 };
 
-module.exports = { getAll, getOne, create, updateItemById, deleteItemById };
+module.exports = {
+  getAll,
+  getOne,
+  getItemsBySearchValue,
+  create,
+  updateItemById,
+  deleteItemById
+};
